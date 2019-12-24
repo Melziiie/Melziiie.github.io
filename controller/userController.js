@@ -1,4 +1,4 @@
-const query = require('../models/index')
+const query = require('../model/index')
 
 // Register New User
 exports.register = async function(req, res){
@@ -19,14 +19,15 @@ exports.register = async function(req, res){
 
 // User Login
 exports.login = async function (req, res) {
-    let {userName, pword} = req.body
-    if(!userName || !pword){
+    let {Email, pword} = req.body
+    if(!Email || !pword){
         return res.json("No Value!")
     }
 
-    let selection = await query("SELECT * FROM `users` WHERE `username` = ?  AND `password` = ?", [userName, pword]);
+    let selection = await query("SELECT * FROM `users` WHERE `Email` = ?  AND `password` = ?", [Email, pword]);
     if(selection >0){
        console.log('Login Successful!')
+       
     }else{
         return res.json("Username or Password may be incorrect!")
     }

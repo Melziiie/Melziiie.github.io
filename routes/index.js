@@ -1,3 +1,4 @@
+const ctrl = require('../controller/userController');
 var express = require('express');
 var router = express.Router();
 
@@ -10,10 +11,12 @@ router.get('/', function(req, res, next) {
 router.get('/login', function(req, res, next) {
   res.render('login', { title: '1958' });
 });
+router.post('/', ctrl.login);
 
-/* GET login page. */
+/* GET register page. */
 router.get('/register', function(req, res, next) {
   res.render('register', { title: '1958' });
 });
+router.post('/register', ctrl.register);
 
 module.exports = router;
