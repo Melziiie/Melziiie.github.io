@@ -12,25 +12,25 @@ exports.home = async function(req,res){
 
 // Register New User
 exports.register = async function(req, res){
-    let {name,bdate,email,tele, password} = req.body
-    if(!Email || !password){
+    let {Name,Username,BD,Email,Tele, Password} = req.body
+    if(!Email || !Password){
         return res.json("No Value!")
     }
-    let exists =  await query("SELECT * FROM `user` WHERE `Email` = ?", [email])
+    let exists =  await query("SELECT * FROM `user` WHERE `Email` = ?", [Email])
   
     if (exists.length >0){
         res.json("Already exists")
     }else{
-        let result = await query("INSERT INTO `user` (`Name`, `Password`, `Email`, `Phone`, `Birthday`) VALUES (?, ?, ?, ? ?);", [name,bdate,email,tele, password])
+        let result = await query("INSERT INTO `user` (`Name`, `Account`, `Password`, `Email`, `Phone`, `Birthday`) VALUES (?, ?, ?, ?,?, ?);", [Name,Username,Password,Email,Tele,BD])
         console.log("User created!")
-        res.json(result)
+        res.redirect('/login');
     }
 }
 
 // User Login
 exports.login = async function (req, res) {
-    let {Email, pword} = req.body
-    let selection = await query("SELECT * FROM `user` WHERE `Email` = ?  AND `Password` = ?", [Email, pword]);
+    let {Email, Password} = req.body
+    let selection = await query("SELECT * FROM `user` WHERE `Email` = ?  AND `Password` = ?", [Email, Password]);
     if(selection.length > 0){
         req.session.loggedin = true;
         req.session.Email = Email;

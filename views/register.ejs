@@ -8,8 +8,8 @@
     <link rel="stylesheet" href="/stylesheets/register.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css" integrity="sha256-46qynGAkLSFpVbEBog43gvNhfrOj+BmwXdxFgVK/Kvc=" crossorigin="anonymous" />    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha256-YLGeXaapI0/5IgZopewRJcFXomhRMlYYjugPLSyNjTY=" crossorigin="anonymous" />    
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.bundle.min.js" integrity="sha256-fzFFyH01cBVPYzl16KT40wqjhgPtq6FFUB6ckN2+GGw=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.slim.min.js" integrity="sha256-pasqAKBDmFT4eHoN2ndd6lN370kFiGUFyTiUHWhU7k8=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.bundle.min.js" integrity="sha256-fzFFyH01cBVPYzl16KT40wqjhgPtq6FFUB6ckN2+GGw=" crossorigin="anonymous"></script>
 
     
     <title><%= title %></title>
@@ -21,36 +21,39 @@
           <div class="card card-signin flex-row my-5">
             <div class="card-body">
               <h5 class="card-title text-center">Register</h5>
-              <form class="form-signin">
+              <form class="form-signin"  action="/register" method="POST">
                 <div class="form-label-group">
-                  <input type="text" id="inputName" class="form-control" placeholder="Name" required autofocus>
+                  <input type="text" id="inputName" class="form-control" name="Name" placeholder="Name" required autofocus>
                   <label for="inputName">Name</label>
                 </div>
-
                 <div class="form-label-group">
-                    <input type="date" id="inputBdate" class="form-control" placeholder="Birthdate" required>
+                  <input type="text" id="inputUsername" class="form-control" name="Username" placeholder="Username" required autofocus>
+                  <label for="inputName">Username</label>
+                </div>
+                <div class="form-label-group">
+                    <input type="date" id="inputBdate" class="form-control" name="BD" placeholder="Birthdate" required>
                     <label for="inputBdate">Birth Date</label>
                 </div>
 
                 <div class="form-label-group">
-                  <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required>
+                  <input type="email" id="inputEmail" class="form-control" name="Email" placeholder="Email address" required>
                   <label for="inputEmail">Email address</label>
                 </div>
 
                 <div class="form-label-group">
-                    <input type="tel" id="inputPhone" class="form-control" placeholder="Telephone" required>
+                    <input type="tel" id="inputPhone" class="form-control" name="Tele" placeholder="Telephone" required>
                     <label for="inputPhone">Telephone</label>
                 </div>                
 
                 <hr>
   
                 <div class="form-label-group">
-                  <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+                  <input type="password" id="inputPassword" class="form-control" name="Password" placeholder="Password" required>
                   <label for="inputPassword">Password</label>
                 </div>
                 
                 <div class="form-label-group">
-                  <input type="password" id="inputConfirmPassword" class="form-control" placeholder="Password" required>
+                  <input type="password" id="inputConfirmPassword" class="form-control"  placeholder="Password" required>
                   <label for="inputConfirmPassword">Confirm password</label>
                 </div>
   
