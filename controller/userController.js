@@ -1,17 +1,27 @@
 const query = require('../model/index')
 
+//Homepage
+exports.home = async function(req,res){
+    if (req.session.loggedin) {
+		res.render('index', { title: '1958' });
+	} else {
+		res.redirect('/login');
+	}
+	response.end();
+}
+
 // Register New User
 exports.register = async function(req, res){
-    let {Email, password} = req.body
+    let {name,bdate,email,tele, password} = req.body
     if(!Email || !password){
         return res.json("No Value!")
     }
-    let exists =  await query("SELECT * FROM `user` WHERE `Email` = ?", [Email])
+    let exists =  await query("SELECT * FROM `user` WHERE `Email` = ?", [email])
   
     if (exists.length >0){
         res.json("Already exists")
     }else{
-        let result = await query("INSERT INTO `user` (`username`, `password`) VALUES (?, ?)", [userName,pword])
+        let result = await query("INSERT INTO `user` (`Name`, `Password`, `Email`, `Phone`, `Birthday`) VALUES (?, ?, ?, ? ?);", [name,bdate,email,tele, password])
         console.log("User created!")
         res.json(result)
     }
@@ -20,17 +30,15 @@ exports.register = async function(req, res){
 // User Login
 exports.login = async function (req, res) {
     let {Email, pword} = req.body
-    if(!Email || !pword){
-        return res.json("No Value!")
-    }
-
-    let selection = await query("SELECT * FROM `users` WHERE `Email` = ?  AND `password` = ?", [Email, pword]);
-    if(selection >0){
-       console.log('Login Successful!')
-       
+    let selection = await query("SELECT * FROM `user` WHERE `Email` = ?  AND `Password` = ?", [Email, pword]);
+    if(selection.length > 0){
+        req.session.loggedin = true;
+        req.session.Email = Email;
+        res.redirect('/');
     }else{
-        return res.json("Username or Password may be incorrect!")
+        return res.json(selection)
     }
+ 
 }
 
 // Update user password
