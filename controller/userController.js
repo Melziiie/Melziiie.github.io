@@ -2,12 +2,14 @@ const query = require('../model/index')
 
 //Homepage
 exports.home = async function(req,res){
+    let categories = await query("SELECT DISTINCT Category FROM `goods`")
     if (req.session.loggedin) {
-		res.render('index', { title: '1958' });
+        // console.log(res.json(categories))
+        res.render('index', { title: '1958' ,categories});
 	} else {
 		res.redirect('/login');
 	}
-	response.end();
+	res.end();
 }
 
 // Register New User

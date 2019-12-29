@@ -2,7 +2,28 @@
   margin:0;
   padding:0;
 }
-
+html,
+    body,
+    header,
+    .carousel {
+      height: 60vh;
+    }
+    @media (max-width: 740px) {
+      html,
+      body,
+      header,
+      .carousel {
+        height: 100vh;
+      }
+    }
+    @media (min-width: 800px) and (max-width: 850px) {
+      html,
+      body,
+      header,
+      .carousel {
+        height: 100vh;
+      }
+    }
 body {
   /* padding: 50px; */
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
@@ -39,4 +60,14 @@ body {
 .header-l a:hover {
   color: #ffc000;
   text-decoration: none;
+}
+
+.widget-header {
+  display: inline-block;
+  vertical-align: middle;
+  position: relative;
+}
+
+.mr-3, .mx-3 {
+  margin-right: 1rem !important;
 }
