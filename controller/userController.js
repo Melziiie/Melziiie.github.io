@@ -3,15 +3,26 @@ const query = require('../model/index')
 //Homepage
 exports.home = async function(req,res){
     let categories = await query("SELECT DISTINCT Category FROM `goods`")
+    let goods = await query("SELECT * FROM `goods`")
     if (req.session.loggedin) {
         // console.log(res.json(categories))
-        res.render('index', { title: '1958' ,categories});
+        res.render('index', { title: '1958' ,cats:categories, product:goods});
 	} else {
 		res.redirect('/login');
 	}
 	res.end();
 }
 
+exports.search = async function(req,res){
+    let results = await query("SELECT * FROM `goods` WHERE `Category` LIKE '%遊%' OR `Description` LIKE '%遊%' OR `Name` LIKE '%遊%'")
+    let cresults = await query("SELECT * FROM `goods` WHERE `Category` LIKE '%遊%'")
+}
+
+exports.cart = async function(req,res){
+
+}
+
+// USERS
 // Register New User
 exports.register = async function(req, res){
     let {Name,Username,BD,Email,Tele, Password} = req.body
@@ -38,7 +49,7 @@ exports.login = async function (req, res) {
         req.session.Email = Email;
         res.redirect('/');
     }else{
-        return res.json(selection)
+        res.redirect('/login')
     }
  
 }
@@ -63,3 +74,28 @@ exports.delete = async function(req, res){
     res.json(result)
     res.send("Account deleted!")
 };
+
+// PRODUCT
+
+exports.product = async function(req,res){
+    let categories = await query("SELECT DISTINCT Category FROM `goods`")
+    if (req.session.loggedin) {
+        // console.log(res.json(categories))
+        res.render('product', { title: '1958' ,cats:categories});
+	}else{
+        res.redirect('/login')
+    }
+}
+
+exports.upload = async function(req, res){
+    console.log(req.body);
+    let {Picture, Name, Price, Category, GameName, Description, Quantity, Date} = req.body;
+    if (!Name || !Price || !Category || !GameName || !Description || !Quantity || !Date)
+    {
+       return res.json("No Value!")
+    }
+    let selection = await query("SELECT `Id` FROM `user` WHERE `Email` = ?", [req.session.Email]);
+    let result = await query("INSERT INTO `goods` (`Name`, `Category`, `Price`, `Game`, `Description`, `Quantity`, `Picture`, `Date`, `Seller_id`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", [Name, Category, Price, GameName, Description, Quantity, Picture, Date, selection.Id]);
+    console.log("Goods Inserted")
+    res.redirect('/product')
+  }

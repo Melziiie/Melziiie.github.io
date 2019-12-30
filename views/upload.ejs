@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>商品上架</title>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="description" content="Wish shop project">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<!-- Bootstrap core CSS -->
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+	<!-- Material Design Bootstrap -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.10.0/css/mdb.min.css" rel="stylesheet"><script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.bundle.min.js" integrity="sha256-fzFFyH01cBVPYzl16KT40wqjhgPtq6FFUB6ckN2+GGw=" crossorigin="anonymous"></script>
+	<!-- Font Awesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
+	<link rel="stylesheet" type="text/css" href="/stylesheets/product.css">
+	<link rel="stylesheet" type="text/css" href="/stylesheets/product_responsive.css">
+	<link rel="stylesheet" href="/stylesheets/style.css">
+	<!-- JQuery -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <!-- Bootstrap tooltips -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.4/umd/popper.min.js"></script>
+    <!-- Bootstrap core JavaScript -->
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <!-- MDB core JavaScript -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.10.0/js/mdb.min.js"></script>
+	<script src="/javascripts/product_custom.js"></script>
+</head>
+<body>
+<div class="super_container">
+	<nav class="navbar fixed-top navbar-expand-lg navbar-light scrolling-navbar white">
+		<div class="container">
+		  <a class="navbar-brand font-weight-bold" href="/"><strong>1958寶物交易網</strong></a>
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent-4" aria-controls="navbarSupportedContent-4" aria-expanded="false" aria-label="Toggle navigation">
+			  <span class="navbar-toggler-icon"></span>
+			</button>
+		  <div class="collapse navbar-collapse" id="navbarSupportedContent-4">
+			<ul class="navbar-nav ml-auto">
+			  <li class="nav-item">
+				<a class="nav-link dark-grey-text font-weight-bold waves-effect waves-light" href="#"><i class="fas fa-shopping-cart blue-text"></i> Cart <span class="sr-only">(current)</span></a>
+			  </li>
+			  <li class="nav-item dropdown ml-3">
+				<a class="nav-link dropdown-toggle dark-grey-text font-weight-bold waves-effect waves-light" id="navbarDropdownMenuLink-4" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><i class="fas fa-user blue-text"></i> Profile </a>
+				<div class="dropdown-menu dropdown-menu-right dropdown-cyan" aria-labelledby="navbarDropdownMenuLink-4">
+				  <a class="dropdown-item waves-effect waves-light" href="#">My account</a>
+				  <a href="/upload" class="dropdown-item waves-effect waves-light">Add Product</a>
+				  <a class="dropdown-item waves-effect waves-light" href="#">Log out</a>
+				</div>
+			  </li>
+			</ul>
+		  </div>
+		</div>
+	</nav>
+	<div class="product">
+		<div class="container">
+			<div class="row">
+				<div class="col">
+					<div class="current_page">
+						<ul>
+							<li><a href='/'>主頁</a></li>
+							<li>商品上架</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+			<form action="/product" method="post" id = "Form">
+			<div class="row product_row">
+
+				<div class="col-lg-7">
+					<div class="product_image">
+						<div class="product_image_large"><img src="https://via.placeholder.com/600x500/efefef?text=Avatar" alt="image-placehoder" class="img-thumbnail" data-target="image-preview" id = "image"></div>
+						<input type = "file" onchange = "ChangeImage()" id = "inputFile" accept = ".jpg, .jpeg, .png" class = "picture_select" name = "Picture"></input>
+					</div>
+				</div>
+
+				<div class="col-lg-5">
+					<div class="product_content">
+						<div class="product_name">商品名稱</div>
+						<input type="text" id="Name" placeholder="商品名稱" class = "product_name_box" name = "Name" required autofocus>
+						<div class="product_label">商品價格</div>
+						<input type="text" id="Price" class = "product_price_box" placeholder="商品價格" name = "Price">
+						<div class="product_label">類別</div>
+						<select type="text" id="Category" placeholder="類別" class = "product_category_box" name = "Category">
+							<% cats.forEach(function(Category){ %>
+							<option><%= Category.Category %></option>
+							<% }) %>
+						</select>
+						<div class="product_label">遊戲名稱</div>
+						<input type="text" id="GameName" class = "game_name_box" placeholder="遊戲名稱" name = "GameName">
+						<div class="product_label">商品敘述</div>
+						<textarea id="Description" placeholder="商品敘述" class = "product_description_box" rows = "3" cols = "21" name = "Description"></textarea>
+						<div class="product_quantity_container">
+							<span>商品數量</span>
+							<div class="product_quantity clearfix">
+								<input id="quantity_input" type="text" pattern="[0-9]*" value="1" name = "Quantity">
+								<div class="quantity_buttons">
+									<div id="quantity_inc_button" class="quantity_inc quantity_control"><i class="fa fa-caret-up" aria-hidden="true"></i></div>
+									<div id="quantity_dec_button" class="quantity_dec quantity_control"><i class="fa fa-caret-down" aria-hidden="true"></i></div>
+								</div>
+							</div>
+						</div>
+							<button type = "submit" class="button cart_button" onclick="Upload()">上架</button>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+<footer class="page-footer text-center text-md-left stylish-color-dark pt-0">
+    <!-- Copyright-->
+    <div class="footer-copyright py-3 text-center">
+        <div class="container-fluid">
+            © 2019 Copyright: Group Seven, NTUT Database Systems 2019 </a>
+        </div>
+    </div>
+    <!--/.Copyright -->
+</div>
+
+<script src="/plugins/easing/easing.js"></script>
+<script src="/plugins/parallax-js-master/parallax.min.js"></script>
+
+<script>
+	function ChangeImage()
+	{
+		var input = document.getElementById("inputFile");
+		var fReader = new FileReader();
+		fReader.readAsDataURL(input.files[0]);
+		fReader.onloadend = function(event){
+			var img = document.getElementById("image");
+			img.src = event.target.result;
+		}
+	}
+	var date = document.createElement('input')
+	date.id = "date"
+	date.name = "Date"
+	date.value = "test"
+	date.style = 'display: none'
+	document.getElementById('Form').appendChild(date);
+	function Upload ()
+	{
+		var dt = new Date();
+		date.value = dt.getFullYear() + '-' + ('0' + dt.getMonth()).substr(-2) + '-' + ('0' + dt.getDate()).substr(-2) + ' ' + ('0' + dt.getHours()).substr(-2) + ':' + ('0' + dt.getMinutes()).substr(-2) + ':' + ('0' + dt.getSeconds()).substr(-2);
+	}
+</script>
+</body>
+</html>
