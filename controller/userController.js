@@ -47,6 +47,7 @@ exports.login = async function (req, res) {
     if(selection.length > 0){
         req.session.loggedin = true;
         req.session.Email = Email;
+        req.session.Id = selection[0].Id;
         res.redirect('/');
     }else{
         res.redirect('/login')
@@ -56,19 +57,18 @@ exports.login = async function (req, res) {
 
 // Update user password
 exports.update = async function (req, res) {
-    let userName = req.body.user_id
-    let pword = req.body.password
+    let Password = req.body.Password
     
-    let result = await query("UPDATE `users` SET `password` = ? WHERE `users`.`username` = ?", [pword, userName])
+    let result = await query("UPDATE `users` SET `Password` = ? WHERE `users`.`Id` = ?", [Password, req.session.Id])
     console.log("Password updated!")
     res.send("Account updated!")
 };
 
 // // Delete user Account
 exports.delete = async function(req, res){
-    let userID = req.body.user_id
+    let Email = req.body.Email
 
-    let result = await query("DELETE FROM `users` WHERE `users`.`user_id` = ?;", [userID]);
+    let result = await query("DELETE FROM `users` WHERE `users`.`Id` = ?;", [req.session.Id]);
     console.log("Account deleted!")
 
     res.json(result)
@@ -78,10 +78,17 @@ exports.delete = async function(req, res){
 // PRODUCT
 
 exports.product = async function(req,res){
+    console.log(req.params)
+    let ID = req.params.id
+    let good = await query("SELECT * FROM `goods` WHERE `Id`=?", [ID])
+    res.render('product', { title: '1958' ,prod: good});
+}
+
+exports.newproduct = async function(req,res){
     let categories = await query("SELECT DISTINCT Category FROM `goods`")
     if (req.session.loggedin) {
         // console.log(res.json(categories))
-        res.render('product', { title: '1958' ,cats:categories});
+        res.render('upload', { title: '1958' ,cats:categories});
 	}else{
         res.redirect('/login')
     }
@@ -96,6 +103,7 @@ exports.upload = async function(req, res){
     }
     let selection = await query("SELECT `Id` FROM `user` WHERE `Email` = ?", [req.session.Email]);
     let result = await query("INSERT INTO `goods` (`Name`, `Category`, `Price`, `Game`, `Description`, `Quantity`, `Picture`, `Date`, `Seller_id`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", [Name, Category, Price, GameName, Description, Quantity, Picture, Date, selection.Id]);
+    let good = await query("SELECT * FROM `goods` WHERE `Name`= ? AND `Category` = ? AND `Price` = ? AND `Game` = ? AND `Description` = ? AND `Quantity` = ? AND `Seller_id` = ?", [Name, Category, Price, GameName, Description, Quantity, selection.Id])
     console.log("Goods Inserted")
-    res.redirect('/product')
+    res.render('product', { title: '1958' ,prod: good});
   }

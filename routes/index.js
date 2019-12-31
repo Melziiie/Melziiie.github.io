@@ -18,7 +18,7 @@ router.get('/register', function(req, res, next) {
 router.post('/register', ctrl.register);
 
 /* GET product page. */
-router.get('/product', ctrl.product);
+router.get('/:id', ctrl.product);
 
 router.post('/product', ctrl.upload);
 
