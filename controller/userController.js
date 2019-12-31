@@ -81,6 +81,7 @@ exports.product = async function(req,res){
     console.log(req.params)
     let ID = req.params.id
     let good = await query("SELECT * FROM `goods` WHERE `Id`=?", [ID])
+    console.log(good)
     res.render('product', { title: '1958' ,prod: good});
 }
 
@@ -94,16 +95,61 @@ exports.newproduct = async function(req,res){
     }
 }
 
-exports.upload = async function(req, res){
+exports.uploadProduct = async function(req, res){
     console.log(req.body);
     let {Picture, Name, Price, Category, GameName, Description, Quantity, Date} = req.body;
     if (!Name || !Price || !Category || !GameName || !Description || !Quantity || !Date)
     {
        return res.json("No Value!")
     }
-    let selection = await query("SELECT `Id` FROM `user` WHERE `Email` = ?", [req.session.Email]);
     let result = await query("INSERT INTO `goods` (`Name`, `Category`, `Price`, `Game`, `Description`, `Quantity`, `Picture`, `Date`, `Seller_id`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", [Name, Category, Price, GameName, Description, Quantity, Picture, Date, selection.Id]);
-    let good = await query("SELECT * FROM `goods` WHERE `Name`= ? AND `Category` = ? AND `Price` = ? AND `Game` = ? AND `Description` = ? AND `Quantity` = ? AND `Seller_id` = ?", [Name, Category, Price, GameName, Description, Quantity, selection.Id])
     console.log("Goods Inserted")
-    res.render('product', { title: '1958' ,prod: good});
+    res.redirect('/productManager')
   }
+
+  // 載入商品管理頁面
+exports.loadProduct = async function(req, res){
+    /*Seller_id 暫時設為1*/
+    let products = await query("Select * FROM  `goods` where `Seller_id` = ?", req.session.Id)
+    products = JSON.stringify(products);
+    products = JSON.parse(products);
+
+    res.render('productManager', {products: products});
+}
+
+// 移除商品
+exports.removeProduct = async function(req, res){
+    await query("DELETE FROM `goods` WHERE `Id` = ?", req.body.Id);
+    console.log("Goods deleted!")
+    res.redirect('/productManager')
+}
+
+// 將要修改的商品存下來，導入商品修改頁面
+exports.modifyProduct = async function(req, res){
+    var product = await query("SELECT * FROM  `goods` where `Id` = ?", req.body.Id);
+    product = JSON.stringify(product);
+    product = JSON.parse(product);
+    req.session.currentProduct = product;
+    console.log(product);
+    console.log("Begin Modify");
+    res.redirect("/productModifier")
+}
+
+// 載入商品修改頁面
+exports.loadProductModifier = async function(req, res){
+    res.render('productModifier', {product: req.session.currentProduct});
+}
+
+// 修改商品
+exports.saveProductModification = async function(req, res){
+  console.log(req.body);
+  let {Picture, Name, Price, Category, GameName, Description, Quantity, Id, Date} = req.body;
+  if (!Name || !Price || !Category || !GameName || !Description || !Quantity || !Date)
+  {
+      return res.json("No Value!")
+  }
+  let result = await query("UPDATE `goods` SET `Name` = ?, `Category` = ?, `Price` = ?, `Game` = ?, `Description` = ?, `Quantity` = ?, `Picture` = ?, `Date` = ? WHERE `Id` = ?", [Name, Category, Price, GameName, Description, Quantity, Picture, Date, Id]);
+
+  console.log("Goods Modified!")
+  res.redirect('/productManager')
+}

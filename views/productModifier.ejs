@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>商品上架</title>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="description" content="Wish shop project">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" type="text/css" href="/stylesheets/styles/bootstrap4/bootstrap.min.css">
+<link href="plugins/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+<link rel="stylesheet" type="text/css" href="/stylesheets/productModifier.css">
+<link rel="stylesheet" type="text/css" href="/stylesheets/product_responsive.css">
+</head>
+<body>
+<div class="super_container">
+	<header class="header">
+		<div class="header_inner d-flex flex-row align-items-center justify-content-start">
+			<div class="logo"><a href="#">1958寶物交易網</a></div>
+			<div class="header_content ml-auto">
+				<div class="search header_search">
+					<form action="#">
+						<input type="search" class="search_input" required="required">
+						<button type="submit" id="search_button" class="search_button"><img src="/images/magnifying-glass.svg" alt=""></button>
+					</form>
+				</div>
+			</div>
+		</div>
+	</header>
+
+	<div class="home">
+		<div class="home_background parallax-window" data-parallax="scroll" data-image-src="/images/Cover.jpg" data-speed="0.8"></div>
+		<div class="home_container"></div>
+	</div>
+	<div class="product">
+		<div class="container">
+			<div class="row">
+				<div class="col">
+					<div class="current_page">
+						<ul>
+							<li><a href="/productManager">商品管理</a></li>
+							<li>商品修改</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+			<form method="post" id = "Form">
+			<div class="row product_row">
+
+				<div class="col-lg-7">
+					<div class="product_image">
+						<div class="product_image_large"><img src="https://via.placeholder.com/600x500/efefef?text=Avatar" alt="image-placehoder" class="img-thumbnail" data-target="image-preview" id = "image"></div>
+						<input type = "file" onchange = "ChangeImage()" id = "inputFile" accept = ".jpg, .jpeg, .png" class = "picture_select" name = "Picture"></input>
+					</div>
+				</div>
+
+				<div class="col-lg-5">
+					<div class="product_content">
+						<div class="product_name">商品名稱</div>
+						<input type="text" id="Name" placeholder="商品名稱" class = "product_name_box" name = "Name" value = "<%=product[0].Name%>" required autofocus>
+						<div class="product_label">商品價格</div>
+						<input type="text" id="Price" class = "product_price_box" placeholder="商品價格" name = "Price" value = "<%=product[0].Price%>">
+						<div class="product_label">類別</div>
+						<select type="text" id="Category" placeholder="類別" class = "product_category_box" name = "Category">
+							<option value = "帳號">帳號</option>
+							<option>代練</option>
+							<option>點數卡</option>
+							<option>代儲</option>
+							<option>商城道具</option>
+							<option>序號</option>
+							<option>遊戲幣</option>
+							<option>禮包</option>
+							<option>其他</option>
+						</select>
+						<div class="product_label">遊戲名稱</div>
+						<input type="text" id="GameName" class = "game_name_box" placeholder="遊戲名稱" name = "GameName" value = "<%=product[0].Game%>">
+						<div class="product_label">商品敘述</div>
+						<textarea id="Description" placeholder="商品敘述" class = "product_description_box" rows = "3" cols = "21" name = "Description"><%=product[0].Description%></textarea>
+						<div class="product_quantity_container">
+							<span>商品數量</span>
+							<div class="product_quantity clearfix">
+								<input id="quantity_input" type="text" pattern="[0-9]*" name = "Quantity" value = "<%=product[0].Quantity%>">
+								<div class="quantity_buttons">
+									<div id="quantity_inc_button" class="quantity_inc quantity_control"><i class="fa fa-caret-up" aria-hidden="true"></i></div>
+									<div id="quantity_dec_button" class="quantity_dec quantity_control"><i class="fa fa-caret-down" aria-hidden="true"></i></div>
+								</div>
+							</div>
+						</div>
+							<input style = "display: none" name = "Id" value = "<%=product[0].Id%>">>
+							<button type = "submit" class="button cart_button" onclick="Upload()">修改完成</button>
+						</div>
+					</div>
+				</div>
+				</form>
+			</div>
+		</div>
+</div>
+
+	<footer class="footer">
+		<div class="container">
+			<div class="row">
+				<div class="col text-center">
+					<div class="footer_logo"><a href="#">1958寶物交易網</a></div>
+					<nav class="footer_nav">
+						<ul>
+							<li><a href="index.html">回到主頁</a></li>
+						</ul>
+					</nav>
+					<div class="footer_social">
+						<ul>
+							<li><a href="#"><i class="fa fa-instagram" aria-hidden="true"></i></a></li>
+							<li><a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
+						</ul>
+					</div>
+					<div class="copyright">
+						Copyright &copy; 2019 - 2025 by Database Group Seven. All Rights reserved.
+					</div>
+				</div>
+			</div>
+		</div>
+	</footer>
+</div>
+
+<script src="/js/jquery-3.2.1.min.js"></script>
+<script src="/stylesheets/styles/bootstrap4/popper.js"></script>
+<script src="/stylesheets/styles/bootstrap4/bootstrap.min.js"></script>
+<script src="/plugins/easing/easing.js"></script>
+<script src="/plugins/parallax-js-master/parallax.min.js"></script>
+<script src="/js/product_custom.js"></script>
+<script>
+	var options = document.getElementsByTagName("option");
+	for (var i = 0; i < options.length; i++){
+		if (options[i].innerHTML == "<%=product[0].Category%>"){
+			options[i].selected = true;
+		}
+	}
+	function ChangeImage()
+	{
+		var input = document.getElementById("inputFile");
+		var fReader = new FileReader();
+		fReader.readAsDataURL(input.files[0]);
+		fReader.onloadend = function(event){
+			var img = document.getElementById("image");
+			img.src = event.target.result;
+		}
+	}
+	var date = document.createElement('input')
+	date.id = "date"
+	date.name = "Date"
+	date.value = "test"
+	date.style = 'display: none'
+	document.getElementById('Form').appendChild(date);
+	function Upload ()
+	{
+		var dt = new Date();
+		date.value = dt.getFullYear() + '-' + ('0' + (parseInt(dt.getMonth()) + 1).toString()).substr(-2) + '-' + ('0' + dt.getDate()).substr(-2) + ' ' + ('0' + dt.getHours()).substr(-2) + ':' + ('0' + dt.getMinutes()).substr(-2) + ':' + ('0' + dt.getSeconds()).substr(-2);
+	}
+</script>
+</body>
+</html>
